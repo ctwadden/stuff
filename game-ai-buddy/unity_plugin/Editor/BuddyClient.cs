@@ -8,6 +8,7 @@ namespace GameAIBuddy
 {
     /// <summary>
     /// HTTP client that talks to the local Game AI Buddy server.
+    /// Supports do/teach modes and screenshot vision.
     /// </summary>
     public static class BuddyClient
     {
@@ -18,6 +19,7 @@ namespace GameAIBuddy
         {
             public string prompt;
             public string app = "unity";
+            public string mode = "do";           // "do" | "teach"
             public bool include_screenshot = false;
         }
 
@@ -27,23 +29,16 @@ namespace GameAIBuddy
             public string reply;
             public string provider;
             public bool had_screenshot;
+            public string mode;
         }
 
-        [Serializable]
-        private class StatusResponse
-        {
-            public bool online;
-            public string provider;
-            public bool gemini_configured;
-            public string model;
-        }
-
-        public static async Task<AskResponse> Ask(string prompt, bool includeScreenshot = false)
+        public static async Task<AskResponse> Ask(string prompt, bool includeScreenshot = false, string mode = "do")
         {
             var requestBody = new AskRequest
             {
                 prompt = prompt,
                 app = "unity",
+                mode = mode,
                 include_screenshot = includeScreenshot,
             };
 
@@ -51,16 +46,20 @@ namespace GameAIBuddy
             byte[] body = Encoding.UTF8.GetBytes(json);
 
             using var req = new UnityWebRequest($"{ServerUrl}/ask", "POST");
-            req.uploadHandler = new UploadHandlerRaw(body);
+            req.uploadHandler   = new UploadHandlerRaw(body);
             req.downloadHandler = new DownloadHandlerBuffer();
             req.SetRequestHeader("Content-Type", "application/json");
+            req.timeout = 90;
 
             var op = req.SendWebRequest();
             while (!op.isDone)
                 await Task.Yield();
 
             if (req.result != UnityWebRequest.Result.Success)
-                throw new Exception($"Buddy server error: {req.error}\nMake sure the server is running: python server/main.py");
+                throw new Exception(
+                    $"Buddy server error: {req.error}\n" +
+                    $"Make sure the server is running:\n  start_server.bat (Win) or bash start_server.sh (Mac)"
+                );
 
             return JsonUtility.FromJson<AskResponse>(req.downloadHandler.text);
         }

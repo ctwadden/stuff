@@ -1,21 +1,24 @@
 """
-HTTP client for Unreal Engine to communicate with the Game AI Buddy server.
-Uses Python's urllib (built-in, no pip needed inside Unreal's Python env).
+HTTP client for Unreal Engine → Game AI Buddy server.
+Supports do/teach modes and screenshot (vision).
 """
 import urllib.request
 import urllib.error
 import json
+import re
 
 SERVER_URL = "http://127.0.0.1:8765"
 
-def ask(prompt: str, include_screenshot: bool = False) -> dict:
+def ask(prompt: str, include_screenshot: bool = False, mode: str = "do") -> dict:
     """
-    Send a prompt to the buddy server and return the response dict.
-    Raises ConnectionError if server is not running.
+    Send prompt to buddy server.
+    mode: 'do' (code generation) | 'teach' (step-by-step tutorial)
+    Returns the full response dict: {reply, provider, had_screenshot, mode}
     """
     payload = json.dumps({
         "prompt": prompt,
         "app": "unreal",
+        "mode": mode,
         "include_screenshot": include_screenshot,
     }).encode("utf-8")
 
@@ -27,12 +30,13 @@ def ask(prompt: str, include_screenshot: bool = False) -> dict:
     )
 
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
+        with urllib.request.urlopen(req, timeout=90) as resp:
             return json.loads(resp.read())
     except urllib.error.URLError as e:
         raise ConnectionError(
             f"Cannot reach Game AI Buddy server at {SERVER_URL}.\n"
-            f"Start it with: python server/main.py\nDetails: {e}"
+            f"Start it with: start_server.bat (Windows) or bash start_server.sh (Mac/Linux)\n"
+            f"Details: {e}"
         )
 
 def check_online() -> bool:
@@ -43,7 +47,5 @@ def check_online() -> bool:
         return False
 
 def extract_python_code(reply: str) -> str | None:
-    """Extract the first ```python code block from the AI reply."""
-    import re
     match = re.search(r"```python\s*([\s\S]*?)```", reply)
     return match.group(1).strip() if match else None
