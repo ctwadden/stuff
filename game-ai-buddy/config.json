@@ -1,0 +1,18 @@
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 8765
+  },
+  "ai": {
+    "provider": "gemini",
+    "gemini_api_key": "PASTE_YOUR_GEMINI_KEY_HERE",
+    "gemini_model": "gemini-1.5-flash",
+    "ollama_url": "http://localhost:11434",
+    "ollama_model": "llava"
+  },
+  "features": {
+    "screenshot_on_ask": true,
+    "auto_execute_code": false,
+    "confirm_before_execute": true
+  }
+}

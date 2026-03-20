@@ -1,0 +1,10 @@
+{
+  "name": "com.gameaibuddy.unity",
+  "version": "1.0.0",
+  "displayName": "Game AI Buddy",
+  "description": "AI assistant for Unity - chat-driven scene building, terrain generation, and asset management.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Game AI Buddy"
+  }
+}
