@@ -14,6 +14,7 @@ from typing import Optional, Literal
 import uvicorn
 
 from ai_client import ask, get_asset_prompt
+from mechanics_prompts import get_mechanic_prompt, list_categories, SYSTEM_PROMPT_MECHANICS
 from screen_capture import capture_screen, load_image_from_bytes
 from config import load_config, is_gemini_configured, get_ai_config
 
@@ -45,6 +46,11 @@ class AskResponse(BaseModel):
 class AssetRequest(BaseModel):
     asset_type: str          # rock | tree | sword | building | character_base | mountain | chest | crystal
     custom_prompt: Optional[str] = None   # override or extend the preset prompt
+
+class MechanicsRequest(BaseModel):
+    mechanic: str            # dot-notation key e.g. 'combat.melee', 'particles.fire'
+    custom: Optional[str] = None
+    mode: Literal["do", "teach"] = "do"
 
 # -----------------------------------------------------------------------
 #  Routes
@@ -126,6 +132,22 @@ async def generate_asset(req: AssetRequest):
     reply = await ask(prompt, "blender", "do", None)
     provider = get_ai_config().get("provider", "gemini")
     return AskResponse(reply=reply, provider=provider, had_screenshot=False, mode="do")
+
+@app.post("/mechanics", response_model=AskResponse)
+async def mechanics_endpoint(req: MechanicsRequest):
+    """
+    Generate complete Unity C# code for a specific game mechanic.
+    mechanic: category.name e.g. 'combat.melee', 'particles.fire', 'player.dash'
+    """
+    prompt = get_mechanic_prompt(req.mechanic, req.custom, req.mode)
+    reply = await ask(prompt, "unity", req.mode, None)
+    provider = get_ai_config().get("provider", "gemini")
+    return AskResponse(reply=reply, provider=provider, had_screenshot=False, mode=req.mode)
+
+@app.get("/mechanics/list")
+def list_mechanics():
+    """List all available mechanic keys grouped by category."""
+    return list_categories()
 
 @app.post("/screenshot")
 def take_screenshot():
