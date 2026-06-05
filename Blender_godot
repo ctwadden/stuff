@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blender to Godot Cinematic & VR Workbook</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        header {
+            background-color: #004b8d;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #0e6eb8;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: #fff;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 960px;
+            margin: auto;
+            padding: 20px;
+        }
+        section {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .module-title {
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+        .module-1 { background-color: #e8f4fb; }
+        .module-2 { background-color: #fff5e6; }
+        .module-3 { background-color: #eaf8e0; }
+        .module-4 { background-color: #fbe7e7; }
+        .module-5 { background-color: #f0e6fb; }
+        .steps {
+            list-style-type: decimal;
+            margin-left: 20px;
+        }
+        .resources ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .resources li {
+            margin-bottom: 6px;
+        }
+        .resources a {
+            color: #004b8d;
+            text-decoration: none;
+        }
+        .resources a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            background-color: #f0f0f0;
+            padding: 10px;
+            font-size: 0.85em;
+        }
+        footer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Blender to Godot Cinematic & VR Workbook</h1>
+        <p>Build cinematic sequences in Blender, import them into Godot, and expand into VR experiences.</p>
+    </header>
+    <nav>
+        <a href="#module1">1. Cinematic Scenes in Blender</a>
+        <a href="#module2">2. Export & Import</a>
+        <a href="#module3">3. Environment & Lighting</a>
+        <a href="#module4">4. VR Setup & Yaw Integration</a>
+        <a href="#module5">5. Expanding Ideas</a>
+    </nav>
+    <div class="container">
+        <!-- Module 1: Cinematic Scenes in Blender -->
+        <section id="module1" class="module-1">
+            <h2 class="module-title">1. Creating Cinematic Scenes in Blender</h2>
+            <p>This module guides you through building a visually stunning cinematic sequence in Blender. We'll use kitbashed assets, simple textures, volumetric lighting and structured planning to create a sequence reminiscent of a film intro.</p>
+            <ol class="steps">
+                <li><strong>Gather references and storyboard:</strong> Collect concept art or movie stills that match the mood (e.g., Star Wars space battle). Sketch a simple storyboard for the sequence to clarify camera angles and timing.</li>
+                <li><strong>Kitbash your scene:</strong> Use a kitbash library or asset packs to quickly assemble starships, space stations, terrain and props. The 80lv interview with Karl&nbsp;Poyzer explains that kitbashing accelerates scene building and allows you to focus on art direction rather than modelling every object【416691231949832†L88-L143】.</li>
+                <li><strong>Apply simple textures:</strong> Keep textures lightweight but convincing. Use cube‑projected image textures or triplanar maps on your models for quick yet consistent results【416691231949832†L88-L143】. You can add subtle wear using procedural textures like JSplacement patterns (see <em>resources</em>).</li>
+                <li><strong>Animate and block out timing:</strong> In Blender’s Dope Sheet or Non‑Linear Animation (NLA) editor, block out the key frames for your ship movements and camera. Use simple shapes as placeholders if final assets aren’t ready.</li>
+                <li><strong>Lighting and atmosphere:</strong> To achieve cinematic realism, use an HDRI environment for global illumination and add a volumetric cube with a warm orange light to create depth and mood【416691231949832†L88-L143】. Adjust the density to simulate space fog or dust.</li>
+                <li><strong>Render by layers:</strong> When working on limited hardware, render different elements (ships, environment, effects) as separate view layers. This approach lets you composite complex shots in the compositor without overloading your GPU【416691231949832†L126-L130】.</li>
+                <li><strong>Export final camera and animation:</strong> Ensure your camera animation is polished before exporting. Name the camera clearly and push NLA strips down for each action (if using NLA) to prepare for glTF export (see Module 2).</li>
+            </ol>
+            <div class="resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://80.lv/articles/how-to-create-cinematic-sci-fi-animation-in-blender/" target="_blank">80 Level – Karl Poyzer's Sci‑Fi Animation workflow</a> – kitbashing, simple textures, HDRI lighting【416691231949832†L88-L143】.</li>
+                    <li><a href="https://www.80.lv/articles/blockout-and-kitbashing-for-environment-art/" target="_blank">80 Level – Blockout & Kitbashing for Environment Art</a> – using procedural textures and JSplacement for sci‑fi scenes【365092426046336†L73-L147】.</li>
+                    <li><a href="https://youtu.be/0c-Gi2JHldHGcd-r" target="_blank">Blender Cinematic Scene Playlist (YouTube)</a> – general tutorial playlist for cinematic scenes.</li>
+                    <li><a href="https://youtube.com/playlist?list=PLH7-Uwr6uvH9AXsXi3tfJh1bcMMQ8duM5" target="_blank">How to Create 3D Cinematic Scenes (YouTube playlist)</a> – multiple tutorials on cinematic scenes in Blender.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Module 2: Export & Import -->
+        <section id="module2" class="module-2">
+            <h2 class="module-title">2. Exporting from Blender & Importing into Godot</h2>
+            <p>Use glTF 2.0 embedded exports to transfer your scene, animations and camera from Blender into Godot. These steps help preserve animations and keep file sizes manageable.</p>
+            <ol class="steps">
+                <li><strong>Organize your animation in Blender:</strong> In the NLA editor, push each animation action down to NLA strips and name them clearly. Clean up unused keyframes and apply transforms to ensure proper export【126456036935714†L68-L90】.</li>
+                <li><strong>Export as glTF 2.0 (embedded):</strong> In Blender, go to <em>File &gt; Export &gt; glTF 2.0</em>. Choose <em>glTF Embedded (.gltf)</em>, enable <em>Selected Objects</em>, enable <em>NLA Strips</em>, and disable <em>Export all animation actions</em> to prevent extra data【126456036935714†L98-L106】.</li>
+                <li><strong>Include camera and lights:</strong> Select your camera and any lights you want to transfer. The exported glTF will include these objects and their animations.</li>
+                <li><strong>Import into Godot:</strong> Drag the <code>.gltf</code> file into the Godot project. Godot automatically creates a scene with your meshes, materials, camera and animations. You may need to rename nodes or set the AnimationPlayer’s <em>root node</em> to match your new scene hierarchy if the imported camera animation doesn’t play【211856862347448†L57-L64】.</li>
+                <li><strong>Verify animations:</strong> Open the imported scene, press play on the AnimationPlayer and confirm that your camera, characters and objects animate as expected【126456036935714†L114-L124】【126456036935714†L131-L139】.</li>
+            </ol>
+            <div class="resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://supermatrix.dev/fix-your-broken-blender-to-godot-animation-exports" target="_blank">Supermatrix – Fix your broken Blender to Godot animation exports (2026)</a> – detailed NLA export guide【126456036935714†L68-L90】.</li>
+                    <li><a href="https://www.khronos.org/assets/uploads/developers/library/2023-godot-pcvr-openxr-tutorial.pdf" target="_blank">Khronos – Godot PCVR OpenXR Tutorial (PDF)</a> – glTF import details and OpenXR setup【2569936289947†L49-L113】.</li>
+                    <li><a href="https://docs.godotengine.org/en/stable/tutorials/export/exporting_glTF_scenes_from_blender.html" target="_blank">Godot Documentation – Exporting glTF scenes from Blender</a>.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Module 3: Environment & Lighting in Godot -->
+        <section id="module3" class="module-3">
+            <h2 class="module-title">3. Setting Up Environment & Lighting</h2>
+            <p>After importing your scene, set up the environment and lighting to achieve realistic results in Godot. Good lighting makes a huge difference in the final look of your cinematic.</p>
+            <ol class="steps">
+                <li><strong>Add a WorldEnvironment node:</strong> In your Godot scene, add a <em>WorldEnvironment</em>. Under <em>Environment</em> properties, switch the <em>Background</em> mode to <em>Sky</em> and assign a <em>Sky</em> resource.</li>
+                <li><strong>Use a physical sky or HDRI:</strong> For realistic outdoor scenes, choose the <em>PhysicalSkyMaterial</em>. Set the ground color and sky energy (values above 1.0 brightens the scene)【305744022770720†L87-L117】. For space scenes, load an HDRI into a PanoramaSky resource.</li>
+                <li><strong>Add a directional light:</strong> Add a <em>DirectionalLight3D</em> node to simulate the sun. Adjust its rotation to match the angle of your scene and modify <em>Energy</em> and <em>Specular</em> to achieve the look you want【305744022770720†L87-L117】.</li>
+                <li><strong>Ambient and indirect lighting:</strong> Under the WorldEnvironment, enable <em>Ambient Light</em>. Increase the <em>Energy</em> and adjust color tint to soften shadows. Consider enabling <em>Screen‑Space Reflection (SSR)</em> and <em>Glow</em> for additional realism.</li>
+                <li><strong>Optional volumetrics:</strong> For atmospheric effects, enable <em>Volumetric Fog</em>. You can also add volumetric clouds via custom shaders or Godot’s built‑in <em>ProceduralSkyMaterial</em> with volumetric modules【305744022770720†L87-L117】.</li>
+            </ol>
+            <div class="resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://hexaquo.com/tutorials/environment-and-light-in-godot-setting-up-for-photorealistic-3d-graphics/" target="_blank">Hexaquo – Environment &amp; Light in Godot</a> – step‑by‑step guide to photorealistic scenes【305744022770720†L87-L117】.</li>
+                    <li><a href="https://docs.godotengine.org/en/stable/tutorials/3d/world_environment.html" target="_blank">Godot Docs – Environment and Post‑Processing</a>.</li>
+                    <li><a href="https://www.youtube.com/playlist?list=PLW-dbiJPVljAdMI7vuVaYRn6B4xA33V3F" target="_blank">Godot 4.x XR & Lighting Tutorials (Playlist)</a> – tutorial series on lighting and XR.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Module 4: VR Setup & Yaw Integration -->
+        <section id="module4" class="module-4">
+            <h2 class="module-title">4. VR Setup and Yaw VR Integration</h2>
+            <p>This module explains how to set up a VR experience in Godot using OpenXR. It also introduces Yaw VR simulators for motion feedback.</p>
+            <ol class="steps">
+                <li><strong>Configure OpenXR:</strong> Install Godot’s OpenXR plugin and enable XR settings in your project. In the project settings, enable <em>XR Features > OpenXR</em>. Ensure your default OpenXR runtime (e.g., SteamVR for HTC Vive) is selected in the headset’s software【2569936289947†L49-L113】.</li>
+                <li><strong>Create an XR rig:</strong> Add an <em>XROrigin3D</em> node to your scene. As children, add an <em>XRCamera3D</em> and two <em>XRController3D</em> nodes (for left and right hands). Position them at the player’s starting point【2569936289947†L49-L113】.</li>
+                <li><strong>Visualize controllers:</strong> Add <em>MeshInstance3D</em> nodes as children of the XRController nodes to display virtual hands or controllers. Use simple shapes during development to test placement【2569936289947†L49-L113】.</li>
+                <li><strong>Add an environment and floor:</strong> Include ground geometry or a plane so the player can see the floor. Use the environment settings from Module 3 for realistic lighting.</li>
+                <li><strong>Set up input actions:</strong> Configure input mappings for VR actions (grab, teleport, interact) under <em>Project Settings > Input Map</em>. Use Godot’s XR input functions to handle controller buttons and analog axes.</li>
+                <li><strong>Connect the Yaw VR simulator (optional):</strong> To add motion feedback, use the <a href="https://docs.yawvr.com/software/gamelink" target="_blank">Yaw Game Link tool</a>. Power on the simulator, open Game Link, connect to your simulator, select your game/application, and configure motion strength and vibration settings【710468388657595†L71-L100】. Game Link supports many VR games and is free to use【710468388657595†L91-L102】.</li>
+                <li><strong>Advanced Yaw integration:</strong> For deeper integration, use the <a href="https://docs.yawvr.com/sdk" target="_blank">Yaw SDK</a>. It allows direct communication with the simulator through C++, C# or Python, enabling real‑time control across platforms【826213767624787†L55-L82】. However, Godot doesn’t have a native plugin yet, so you may need to build a GDExtension to interface with the C API.</li>
+            </ol>
+            <div class="resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://docs.yawvr.com/software/gamelink" target="_blank">Yaw VR – Game Link</a> – how to connect VR games to Yaw VR【710468388657595†L71-L100】【710468388657595†L91-L102】.</li>
+                    <li><a href="https://docs.yawvr.com/sdk" target="_blank">Yaw VR – SDK Documentation</a> – for direct integration and coding control【826213767624787†L55-L82】.</li>
+                    <li><a href="https://github.com/GodotVR/godot_openxr" target="_blank">Godot OpenXR Plugin</a> – official plugin repository.</li>
+                    <li><a href="https://www.khronos.org/assets/uploads/developers/library/2023-godot-pcvr-openxr-tutorial.pdf" target="_blank">OpenXR PCVR Tutorial (Khronos PDF)</a> – full step‑by‑step guide【2569936289947†L49-L113】.</li>
+                    <li><a href="https://www.youtube.com/playlist?list=PLm511z7qohoq1rKkAZV8a6Fq5GP72ieOg" target="_blank">OpenXR & VR in Godot (YouTube playlist)</a> – videos on setting up VR.</li>
+                </ul>
+            </div>
+        </section>
+        <!-- Module 5: Expanding Ideas -->
+        <section id="module5" class="module-5">
+            <h2 class="module-title">5. Expanding Ideas & Next Steps</h2>
+            <p>Now that you know how to build a cinematic and bring it into Godot with VR, consider these ideas to push your project further.</p>
+            <ol class="steps">
+                <li><strong>Add interactivity:</strong> Incorporate interactable elements like control panels or weapons by scripting XR controller inputs. Use Godot’s physics engine to enable collisions and responses.</li>
+                <li><strong>Hand‑tracking and physics:</strong> Use the XR Tools plugin to enable direct hand tracking for headsets that support it, or connect additional controllers like hand sets for more immersive interactions.</li>
+                <li><strong>Multi‑user experiences:</strong> Explore networking through Godot’s High‑Level Multiplayer API to allow multiple users to view or interact with the same cinematic in real time.</li>
+                <li><strong>Integration with motion platforms:</strong> Build a custom GDExtension using the Yaw SDK to control the motion simulator directly from Godot. This requires programming but allows you to synchronize motion with the camera for full immersion.</li>
+                <li><strong>Use other game engines:</strong> Unreal and Unity have ready‑made Yaw SDK plugins. If you need advanced features unavailable in Godot, consider building the VR experience in one of these engines.</li>
+                <li><strong>Create an educational series:</strong> Turn your cinematic workflow into a class project. Divide tasks among students: modelling, texturing, animation, VR setup, and documentation. Use this workbook as a starting point.</li>
+            </ol>
+            <div class="resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://www.godotengine.org/asset-library/tag/openxr" target="_blank">Godot Asset Library – XR Tools</a> – to add hand tracking and teleports.</li>
+                    <li><a href="https://docs.godotengine.org/en/stable/tutorials/networking/index.html" target="_blank">Godot Multiplayer Docs</a> – guidelines for networked experiences.</li>
+                    <li><a href="https://docs.unrealengine.com/5.0/en-US/using-vr-with-unreal-engine/" target="_blank">Unreal Engine VR Docs</a> – VR alternatives if switching engines.</li>
+                    <li><a href="https://learn.unity.com/pathway/virtual-reality" target="_blank">Unity – VR Learning Pathway</a> – VR path in Unity.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p><strong>References:</strong></p>
+        <p>[1] Karl&nbsp;Poyzer explains how kitbashing, simple textures, HDRI lighting and volumetric cubes create cinematic sci‑fi shots【416691231949832†L88-L143】. This forms the basis for Module 1.</p>
+        <p>[2] The Supermatrix blog details organising animation with the NLA editor and exporting glTF 2.0 strips, plus verifying imports in Godot【126456036935714†L68-L90】【126456036935714†L98-L106】【126456036935714†L114-L124】【126456036935714†L131-L139】.</p>
+        <p>[3] The Hexaquo article describes setting up a WorldEnvironment, choosing physical sky or HDRI, adjusting sky energy, and adding a DirectionalLight in Godot【305744022770720†L87-L117】.</p>
+        <p>[4] The Khronos OpenXR tutorial provides step‑by‑step instructions for setting up OpenXR rigs, including XROrigin3D, XRCamera3D, and XRController3D nodes, and enabling default runtime on PCVR【2569936289947†L49-L113】.</p>
+        <p>[5] Yaw VR’s Game Link documentation notes that Game Link connects VR games to the Yaw simulator, is free to use, and outlines steps to connect and configure games【710468388657595†L71-L100】【710468388657595†L91-L102】.</p>
+        <p>[6] Yaw VR’s SDK documentation summarises that the SDK allows direct integration through C++, C# or Python, enabling real‑time motion control across platforms【826213767624787†L55-L82】.</p>
+    </footer>
+</body>
+</html>
